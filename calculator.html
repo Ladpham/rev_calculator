@@ -43,6 +43,11 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
+        .fees-info {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -66,14 +71,31 @@
         <input type="number" id="weeklyProfit" name="weeklyProfit">
     </div>
     <div class="form-group">
+        <button onclick="suggestLimit()">Suggérer Limite Waribei</button>
         <button onclick="calculateBenefits()">Calculer</button>
     </div>
     <div class="result" id="result">
         <!-- Result will be displayed here -->
     </div>
+    <div class="fees-info">
+        <p>Frais Waribei: CFA 3,000 <a href="#">en savoir plus</a></p>
+    </div>
 </div>
 
 <script>
+    function suggestLimit() {
+        const weeklyPurchase = parseFloat(document.getElementById('weeklyPurchase').value);
+
+        if (isNaN(weeklyPurchase)) {
+            alert('Veuillez entrer une valeur d\'achat par semaine valide.');
+            return;
+        }
+
+        let limitWaribei = Math.round(weeklyPurchase * 0.30 / 20000) * 20000;
+
+        alert('La Limite Waribei suggérée est: ' + limitWaribei + ' CFA');
+    }
+
     function calculateBenefits() {
         const weeklyPurchase = parseFloat(document.getElementById('weeklyPurchase').value);
         const weeklyProfit = parseFloat(document.getElementById('weeklyProfit').value);
@@ -87,24 +109,29 @@
         let limitWaribei = Math.round(weeklyPurchase * 0.30 / 20000) * 20000;
 
         // Calculer les Frais Waribei
-        let fraisWaribei;
-        if (limitWaribei <= 50000) {
-            fraisWaribei = 1500;
-        } else if (limitWaribei <= 100000) {
-            fraisWaribei = 3000;
-        } else if (limitWaribei <= 150000) {
-            fraisWaribei = 4500;
-        } else if (limitWaribei <= 200000) {
-            fraisWaribei = 6000;
-        } else if (limitWaribei <= 250000) {
-            fraisWaribei = 7500;
-        }
+        let fraisWaribei = calculateWaribeiFees(limitWaribei);
 
         // Calculer le Bénéfice Total avec Waribei
         const totalBenefit = weeklyProfit + (weeklyPurchase / weeklyProfit) * limitWaribei - fraisWaribei;
 
         // Afficher le résultat
         document.getElementById('result').innerText = `Bénéfice Total avec Waribei: ${totalBenefit.toFixed(2)} CFA`;
+    }
+
+    function calculateWaribeiFees(limitWaribei) {
+        if (limitWaribei <= 50000) {
+            return 1500;
+        } else if (limitWaribei <= 100000) {
+            return 3000;
+        } else if (limitWaribei <= 150000) {
+            return 4500;
+        } else if (limitWaribei <= 200000) {
+            return 6000;
+        } else if (limitWaribei <= 250000) {
+            return 7500;
+        } else {
+            return Math.ceil((limitWaribei - 250000) / 50000) * 1500 + 7500; // Increment fees for each 50,000 CFA above 250,000
+        }
     }
 </script>
 
