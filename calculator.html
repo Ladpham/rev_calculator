@@ -55,11 +55,11 @@
     <form id="benefitForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdKMaZX4nWt1-6yONMmP-7u2dfPwwVLRxpOWqj5G7sYIQXk5Q/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
         <div class="form-group">
             <label for="shopName">Nom de la boutique</label>
-            <input type="text" id="shopName" name="entry.1423831827">
+            <input type="text" id="shopName" name="entry.1423831827" oninput="updateCalculations()">
         </div>
         <div class="form-group">
             <label for="phoneNumber">Numéro de téléphone</label>
-            <input type="text" id="phoneNumber" name="entry.249556939">
+            <input type="text" id="phoneNumber" name="entry.249556939" oninput="updateCalculations()">
         </div>
         <div class="form-group">
             <label for="weeklyPurchase">Valeur actuelle d’achat par semaine (CFA)</label>
@@ -71,7 +71,7 @@
         </div>
         <div class="form-group">
             <label for="limitWaribei">Limite Waribei</label>
-            <input type="text" id="limitWaribei" name="limitWaribei" oninput="formatInput(this); updateCalculations()">
+            <input type="text" id="limitWaribei" oninput="formatInput(this); updateCalculations(true)">
         </div>
         <div class="fees-info" id="fees-info">
             <p>Frais Waribei: ... F</p>
@@ -82,6 +82,12 @@
         <div class="tagline" id="tagline">
             Nous finançons, vous vendez, vous grandissez
         </div>
+        
+        <!-- Hidden fields for additional information -->
+        <input type="hidden" id="hiddenLimitWaribei" name="entry.1234567890">
+        <input type="hidden" id="hiddenFeesWaribei" name="entry.2345678901">
+        <input type="hidden" id="hiddenTotalBenefit" name="entry.3456789012">
+
         <input type="submit" value="Submit" style="display: none;">
     </form>
 </div>
@@ -100,12 +106,12 @@
         }
     }
 
-    function updateCalculations() {
+    function updateCalculations(manualLimitUpdate = false) {
         const weeklyPurchase = parseFloat(document.getElementById('weeklyPurchase').value.replace(/\s/g, ''));
         const weeklyProfit = parseFloat(document.getElementById('weeklyProfit').value.replace(/\s/g, ''));
         let limitWaribei = parseFloat(document.getElementById('limitWaribei').value.replace(/\s/g, ''));
 
-        if (!isNaN(weeklyPurchase)) {
+        if (!isNaN(weeklyPurchase) && !manualLimitUpdate) {
             limitWaribei = Math.round(weeklyPurchase * 0.30 / 20000) * 20000;
             document.getElementById('limitWaribei').value = new Intl.NumberFormat('fr-FR').format(limitWaribei);
         }
@@ -124,6 +130,11 @@
 
         document.getElementById('fees-info').innerHTML = `<p>Frais Waribei: ${formatNumber(fraisWaribei)} F</p>`;
         document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI: ${formatNumber(totalBenefit)} F`;
+
+        // Update hidden fields
+        document.getElementById('hiddenLimitWaribei').value = limitWaribei;
+        document.getElementById('hiddenFeesWaribei').value = fraisWaribei;
+        document.getElementById('hiddenTotalBenefit').value = totalBenefit;
     }
 
     function calculateWaribeiFees(limitWaribei) {
