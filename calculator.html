@@ -52,7 +52,7 @@
 <body>
 
 <div class="container">
-    <form id="benefitForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdKMaZX4nWt1-6yONMmP-7u2dfPwwVLRxpOWqj5G7sYIQXk5Q/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+    <form id="benefitForm" action="https://docs.google.com/forms/d/e/1FAIpQLSctsOI58a98UJkWxPCCKOZZ50jbzY7tnFX3CAmonzSatFm3ng/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
         <div class="form-group">
             <label for="shopName">Nom de la boutique</label>
             <input type="text" id="shopName" name="entry.1423831827" oninput="updateCalculations()">
@@ -71,7 +71,7 @@
         </div>
         <div class="form-group">
             <label for="limitWaribei">Limite Waribei</label>
-            <input type="text" id="limitWaribei" oninput="formatInput(this); updateCalculations(true)">
+            <input type="text" id="limitWaribei" name="entry.1839467747" oninput="formatInput(this); updateCalculations(true)">
         </div>
         <div class="fees-info" id="fees-info">
             <p>Frais Waribei: ... F</p>
@@ -84,9 +84,9 @@
         </div>
         
         <!-- Hidden fields for additional information -->
-        <input type="hidden" id="hiddenLimitWaribei" name="entry.1234567890">
-        <input type="hidden" id="hiddenFeesWaribei" name="entry.2345678901">
-        <input type="hidden" id="hiddenTotalBenefit" name="entry.3456789012">
+        <input type="hidden" id="hiddenLimitWaribei" name="entry.1839467747">
+        <input type="hidden" id="hiddenFeesWaribei" name="entry.1892710767">
+        <input type="hidden" id="hiddenTotalBenefit" name="entry.35566621">
 
         <input type="submit" value="Submit" style="display: none;">
     </form>
@@ -135,6 +135,11 @@
         document.getElementById('hiddenLimitWaribei').value = limitWaribei;
         document.getElementById('hiddenFeesWaribei').value = fraisWaribei;
         document.getElementById('hiddenTotalBenefit').value = totalBenefit;
+
+        console.log("Updated Values:");
+        console.log("Limit Waribei:", limitWaribei);
+        console.log("Frais Waribei:", fraisWaribei);
+        console.log("Total Benefit:", totalBenefit);
     }
 
     function calculateWaribeiFees(limitWaribei) {
