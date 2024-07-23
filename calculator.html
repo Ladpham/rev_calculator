@@ -15,9 +15,11 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 10px;
+            text-align: center;
         }
         .form-group {
             margin-bottom: 15px;
+            text-align: left;
         }
         .form-group label {
             display: block;
@@ -35,6 +37,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
         .form-group button:hover {
             background-color: #0056b3;
@@ -42,6 +45,8 @@
         .result {
             margin-top: 20px;
             font-size: 1.2em;
+            font-weight: bold;
+            color: #e74c3c;
         }
         .fees-info {
             margin-top: 10px;
@@ -71,11 +76,15 @@
         <input type="number" id="weeklyProfit" name="weeklyProfit">
     </div>
     <div class="form-group">
+        <label for="limitWaribei">Limite Waribei</label>
+        <input type="number" id="limitWaribei" name="limitWaribei" readonly>
+    </div>
+    <div class="form-group">
         <button onclick="suggestLimit()">Suggérer Limite Waribei</button>
         <button onclick="calculateBenefits()">Calculer</button>
     </div>
     <div class="result" id="result">
-        <!-- Result will be displayed here -->
+        BÉNÉFICE TOTAL AVEC WARIBEI: 100.000 F
     </div>
     <div class="fees-info">
         <p>Frais Waribei: CFA 3,000 <a href="#">en savoir plus</a></p>
@@ -92,21 +101,18 @@
         }
 
         let limitWaribei = Math.round(weeklyPurchase * 0.30 / 20000) * 20000;
-
-        alert('La Limite Waribei suggérée est: ' + limitWaribei + ' CFA');
+        document.getElementById('limitWaribei').value = limitWaribei;
     }
 
     function calculateBenefits() {
         const weeklyPurchase = parseFloat(document.getElementById('weeklyPurchase').value);
         const weeklyProfit = parseFloat(document.getElementById('weeklyProfit').value);
+        const limitWaribei = parseFloat(document.getElementById('limitWaribei').value);
 
-        if (isNaN(weeklyPurchase) || isNaN(weeklyProfit)) {
+        if (isNaN(weeklyPurchase) || isNaN(weeklyProfit) || isNaN(limitWaribei)) {
             alert('Veuillez entrer des valeurs valides.');
             return;
         }
-
-        // Calculer la Limite Waribei
-        let limitWaribei = Math.round(weeklyPurchase * 0.30 / 20000) * 20000;
 
         // Calculer les Frais Waribei
         let fraisWaribei = calculateWaribeiFees(limitWaribei);
@@ -115,7 +121,7 @@
         const totalBenefit = weeklyProfit + (weeklyPurchase / weeklyProfit) * limitWaribei - fraisWaribei;
 
         // Afficher le résultat
-        document.getElementById('result').innerText = `Bénéfice Total avec Waribei: ${totalBenefit.toFixed(2)} CFA`;
+        document.getElementById('result').innerText = `BÉNÉFICE TOTAL AVEC WARIBEI: ${totalBenefit.toFixed(2)} F`;
     }
 
     function calculateWaribeiFees(limitWaribei) {
