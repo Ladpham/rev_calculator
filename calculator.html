@@ -52,26 +52,26 @@
 <body>
 
 <div class="container">
-    <form id="benefitForm" action="https://docs.google.com/forms/d/e/1FAIpQLSctsOI58a98UJkWxPCCKOZZ50jbzY7tnFX3CAmonzSatFm3ng/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+    <form id="benefitForm" onsubmit="submitted=true; return false;">
         <div class="form-group">
             <label for="shopName">Nom de la boutique</label>
-            <input type="text" id="shopName" name="entry.1423831827" oninput="updateCalculations()">
+            <input type="text" id="shopName" name="shopName" oninput="updateCalculations()">
         </div>
         <div class="form-group">
             <label for="phoneNumber">Numéro de téléphone</label>
-            <input type="text" id="phoneNumber" name="entry.249556939" oninput="updateCalculations()">
+            <input type="text" id="phoneNumber" name="phoneNumber" oninput="updateCalculations()">
         </div>
         <div class="form-group">
             <label for="weeklyPurchase">Valeur actuelle d’achat par semaine (CFA)</label>
-            <input type="text" id="weeklyPurchase" name="entry.1290973884" oninput="formatInput(this); updateCalculations()">
+            <input type="text" id="weeklyPurchase" name="weeklyPurchase" oninput="formatInput(this); updateCalculations()">
         </div>
         <div class="form-group">
             <label for="weeklyProfit">Bénéfice réalisé par semaine (CFA)</label>
-            <input type="text" id="weeklyProfit" name="entry.882530415" oninput="formatInput(this); updateCalculations()">
+            <input type="text" id="weeklyProfit" name="weeklyProfit" oninput="formatInput(this); updateCalculations()">
         </div>
         <div class="form-group">
             <label for="limitWaribei">Limite Waribei</label>
-            <input type="text" id="limitWaribei" name="entry.1839467747" oninput="formatInput(this); updateCalculations(true)">
+            <input type="text" id="limitWaribei" name="limitWaribei" oninput="formatInput(this); updateCalculations(true)">
         </div>
         <div class="fees-info" id="fees-info">
             <p>Frais Waribei: ... F</p>
@@ -83,19 +83,15 @@
             Nous finançons, vous vendez, vous grandissez
         </div>
         
-        <!-- Hidden fields for additional information -->
-        <input type="hidden" id="hiddenLimitWaribei" name="entry.1839467747">
-        <input type="hidden" id="hiddenFeesWaribei" name="entry.1892710767">
-        <input type="hidden" id="hiddenTotalBenefit" name="entry.35566621">
-
         <input type="submit" value="Submit" style="display: none;">
     </form>
 </div>
 
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {alert('Formulaire soumis avec succès!');}"></iframe>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
 <script>
     var submitted = false;
+    var submitTimeout;
 
     function formatInput(input) {
         let value = input.value.replace(/\s/g, '');
@@ -107,6 +103,8 @@
     }
 
     function updateCalculations(manualLimitUpdate = false) {
+        clearTimeout(submitTimeout);
+        
         const weeklyPurchase = parseFloat(document.getElementById('weeklyPurchase').value.replace(/\s/g, ''));
         const weeklyProfit = parseFloat(document.getElementById('weeklyProfit').value.replace(/\s/g, ''));
         let limitWaribei = parseFloat(document.getElementById('limitWaribei').value.replace(/\s/g, ''));
@@ -131,15 +129,7 @@
         document.getElementById('fees-info').innerHTML = `<p>Frais Waribei: ${formatNumber(fraisWaribei)} F</p>`;
         document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI: ${formatNumber(totalBenefit)} F`;
 
-        // Update hidden fields
-        document.getElementById('hiddenLimitWaribei').value = limitWaribei;
-        document.getElementById('hiddenFeesWaribei').value = fraisWaribei;
-        document.getElementById('hiddenTotalBenefit').value = totalBenefit;
-
-        console.log("Updated Values:");
-        console.log("Limit Waribei:", limitWaribei);
-        console.log("Frais Waribei:", fraisWaribei);
-        console.log("Total Benefit:", totalBenefit);
+        submitTimeout = setTimeout(submitForm, 2000); // Trigger form submission after 2 seconds
     }
 
     function calculateWaribeiFees(limitWaribei) {
@@ -160,6 +150,24 @@
 
     function formatNumber(number) {
         return new Intl.NumberFormat('fr-FR').format(number);
+    }
+
+    function submitForm() {
+        const shopName = encodeURIComponent(document.getElementById('shopName').value);
+        const phoneNumber = encodeURIComponent(document.getElementById('phoneNumber').value);
+        const weeklyPurchase = encodeURIComponent(document.getElementById('weeklyPurchase').value.replace(/\s/g, ''));
+        const weeklyProfit = encodeURIComponent(document.getElementById('weeklyProfit').value.replace(/\s/g, ''));
+        const limitWaribei = encodeURIComponent(document.getElementById('limitWaribei').value.replace(/\s/g, ''));
+        const fraisWaribei = encodeURIComponent(document.getElementById('fees-info').innerText.replace(/\s/g, '').split(':')[1].replace('F', ''));
+        const totalBenefit = encodeURIComponent(document.getElementById('result').innerText.replace(/\s/g, '').split(':')[1].replace('F', ''));
+
+        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSctsOI58a98UJkWxPCCKOZZ50jbzY7tnFX3CAmonzSatFm3ng/formResponse?entry.1423831827=${shopName}&entry.249556939=${phoneNumber}&entry.1290973884=${weeklyPurchase}&entry.882530415=${weeklyProfit}&entry.1839467747=${limitWaribei}&entry.1892710767=${fraisWaribei}&entry.35566621=${totalBenefit}`;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", formUrl, true);
+        xhr.send();
+
+        console.log("Form submitted!");
     }
 </script>
 
