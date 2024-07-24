@@ -85,6 +85,18 @@
         
         <input type="submit" value="Submit" style="display: none;">
     </form>
+
+    <!-- Hidden form for submission -->
+    <form id="hiddenForm" action="https://docs.google.com/forms/d/e/1FAIpQLSctsOI58a98UJkWxPCCKOZZ50jbzY7tnFX3CAmonzSatFm3ng/formResponse" method="POST" target="hidden_iframe" style="display:none;">
+        <input type="hidden" name="entry.1423831827" id="hiddenShopName">
+        <input type="hidden" name="entry.249556939" id="hiddenPhoneNumber">
+        <input type="hidden" name="entry.1290973884" id="hiddenWeeklyPurchase">
+        <input type="hidden" name="entry.882530415" id="hiddenWeeklyProfit">
+        <input type="hidden" name="entry.1839467747" id="hiddenLimitWaribei">
+        <input type="hidden" name="entry.1892710767" id="hiddenFeesWaribei">
+        <input type="hidden" name="entry.35566621" id="hiddenTotalBenefit">
+        <input type="submit">
+    </form>
 </div>
 
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
@@ -129,6 +141,15 @@
         document.getElementById('fees-info').innerHTML = `<p>Frais Waribei: ${formatNumber(fraisWaribei)} F</p>`;
         document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI: ${formatNumber(totalBenefit)} F`;
 
+        // Populate hidden form fields
+        document.getElementById('hiddenShopName').value = document.getElementById('shopName').value;
+        document.getElementById('hiddenPhoneNumber').value = document.getElementById('phoneNumber').value;
+        document.getElementById('hiddenWeeklyPurchase').value = document.getElementById('weeklyPurchase').value.replace(/\s/g, '');
+        document.getElementById('hiddenWeeklyProfit').value = document.getElementById('weeklyProfit').value.replace(/\s/g, '');
+        document.getElementById('hiddenLimitWaribei').value = document.getElementById('limitWaribei').value.replace(/\s/g, '');
+        document.getElementById('hiddenFeesWaribei').value = fraisWaribei;
+        document.getElementById('hiddenTotalBenefit').value = totalBenefit;
+
         submitTimeout = setTimeout(submitForm, 2000); // Trigger form submission after 2 seconds
     }
 
@@ -153,20 +174,7 @@
     }
 
     function submitForm() {
-        const shopName = encodeURIComponent(document.getElementById('shopName').value);
-        const phoneNumber = encodeURIComponent(document.getElementById('phoneNumber').value);
-        const weeklyPurchase = encodeURIComponent(document.getElementById('weeklyPurchase').value.replace(/\s/g, ''));
-        const weeklyProfit = encodeURIComponent(document.getElementById('weeklyProfit').value.replace(/\s/g, ''));
-        const limitWaribei = encodeURIComponent(document.getElementById('limitWaribei').value.replace(/\s/g, ''));
-        const fraisWaribei = encodeURIComponent(document.getElementById('fees-info').innerText.replace(/\s/g, '').split(':')[1].replace('F', ''));
-        const totalBenefit = encodeURIComponent(document.getElementById('result').innerText.replace(/\s/g, '').split(':')[1].replace('F', ''));
-
-        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSctsOI58a98UJkWxPCCKOZZ50jbzY7tnFX3CAmonzSatFm3ng/formResponse?entry.1423831827=${shopName}&entry.249556939=${phoneNumber}&entry.1290973884=${weeklyPurchase}&entry.882530415=${weeklyProfit}&entry.1839467747=${limitWaribei}&entry.1892710767=${fraisWaribei}&entry.35566621=${totalBenefit}`;
-
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", formUrl, true);
-        xhr.send();
-
+        document.getElementById('hiddenForm').submit();
         console.log("Form submitted!");
     }
 </script>
