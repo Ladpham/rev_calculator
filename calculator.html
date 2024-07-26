@@ -6,7 +6,7 @@
     <title>Calculateur de Bénéfices</title>
     <style>
 <style>
-    body {
+   body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
@@ -15,7 +15,7 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        background-color: #fff; /* Changed background to white */
+        background-color: #fff;
     }
     .container {
         width: 90%;
@@ -26,8 +26,8 @@
         text-align: center;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         background-color: #fff;
-        margin-top: 2px; /* Reduced margin above */
-        margin-bottom: 2px; /* Reduced margin below */
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
     .form-group {
         margin-bottom: 15px;
@@ -84,31 +84,25 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%;
         width: 100%;
-        min-height: 100vh; /* Ensure the div takes at least the full viewport height */
+        height: 100%;
+        min-height: 100vh;
     }
 
     .iframe-container {
         width: 100%;
-        max-width: 1240px; /* Maximum width of the iframe */
-        height: 100%;
-        max-height: 800px; /* Maximum height of the iframe */
-        padding: 20px;
-        box-sizing: border-box;
+        height: 0;
+        padding-bottom: 67.5%; /* 800 / 1240 = 0.64516 = 64.516%, adjust for aspect ratio */
+        position: relative;
     }
 
     .iframe-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         border: none;
-    }
-
-    @media (max-width: 640px) {
-        .iframe-container {
-            max-width: 100%;
-            max-height: 100%;
-        }
     }
 </style>
 </head>
