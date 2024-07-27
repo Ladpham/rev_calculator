@@ -5,105 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculateur de Bénéfices</title>
     <style>
-   body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #fff;
-    }
-    .container {
-        width: 90%;
-        max-width: 500px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        background-color: #fff;
-        margin-top: 2px;
-        margin-bottom: 2px;
-    }
-    .form-group {
-        margin-bottom: 15px;
-        text-align: left;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-    }
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    .result {
-        margin-top: 20px;
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #e74c3c;
-    }
-    .tagline {
-        margin-top: 18px;
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #064C72;
-    }
-    .fees-info {
-        margin-top: 10px;
-        font-size: 0.9em;
-        color: #666;
-    }
-    @media (max-width: 600px) {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fff;
+        }
         .container {
-            padding: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            margin-top: 2px;
+            margin-bottom: 2px;
         }
-        .form-group input {
-            padding: 8px;
-        }
-        .result, .tagline {
-            font-size: 1em;
-        }
-    }
-    @media (max-width: 400px) {
-        .result, .tagline {
-            font-size: 0.9em;
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
         }
         .form-group label {
-            font-size: 0.9em;
+            display: block;
+            margin-bottom: 5px;
         }
-    }
-    .dorik-code-txw59mf0 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        min-height: 100vh;
-    }
-
-    .iframe-container {
-        width: 100%;
-        height: 0;
-        padding-bottom: 67.5%; /* 800 / 1240 = 0.64516 = 64.516%, adjust for aspect ratio */
-        position: relative;
-    }
-
-    .iframe-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
-</style>
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .tagline {
+            margin-top: 18px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #064C72;
+        }
+        .fees-info {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .form-group input {
+                padding: 8px;
+            }
+            .result, .tagline {
+                font-size: 1em;
+            }
+        }
+        @media (max-width: 400px) {
+            .result, .tagline {
+                font-size: 0.9em;
+            }
+            .form-group label {
+                font-size: 0.9em;
+            }
+        }
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 125%; /* Aspect ratio for 640x800 iframe */
+            height: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -184,7 +178,7 @@
 
         if (isNaN(weeklyPurchase) || isNaN(weeklyProfit) || isNaN(limitWaribei)) {
             document.getElementById('fees-info').innerHTML = '<p>Frais Waribei: ... F</p>';
-            document.getElementById('result').innerHTML = 'BÉNÉFICE TOTAL AVEC WARIBEI xxxxxxxxx: ... F';
+            document.getElementById('result').innerHTML = 'BÉNÉFICE TOTAL AVEC WARIBEI: ... F';
             return;
         }
 
@@ -195,7 +189,7 @@
         const totalBenefit = weeklyProfit + additionalBenefit - fraisWaribei;
 
         document.getElementById('fees-info').innerHTML = `<p>Frais Waribei: ${formatNumber(fraisWaribei)} F</p>`;
-        document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI xxxxxxxxx: ${formatNumber(totalBenefit)} F`;
+        document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI: ${formatNumber(totalBenefit)} F`;
 
         // Populate hidden form fields
         document.getElementById('hiddenShopName').value = document.getElementById('shopName').value;
