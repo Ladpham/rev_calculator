@@ -159,10 +159,11 @@
         }
 
         if (isNaN(weeklyPurchase) || isNaN(weeklyProfit) || isNaN(limitWaribei)) {
-            document.getElementById('fees-info').innerHTML = '<p>Frais Waribei: ... F</p>';
-            document.getElementById('result').innerHTML = 'BÉNÉFICE TOTAL AVEC WARIBEI: ... F';
+            document.getElementById('fees-info').innerHTML = `<p>Frais Waribei: ${formatNumber(fraisWaribei)} F</p>`;
+            document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI: ${formatNumber(totalBenefit)} F`;
             return;
         }
+
 
         let fraisWaribei = calculateWaribeiFees(limitWaribei);
 
