@@ -5,19 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculateur de Bénéfices</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #fff; /* Changed background to white */
+            background-color: #fff;
         }
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             padding: 20px;
             border: 1px solid #ccc;
@@ -25,8 +29,7 @@
             text-align: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #fff;
-            margin-top: 2px; /* Reduced margin above */
-            margin-bottom: 2px; /* Reduced margin below */
+            margin: 20px auto;
         }
         .form-group {
             margin-bottom: 15px;
@@ -39,20 +42,18 @@
         .form-group input {
             width: 100%;
             padding: 10px;
-            box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        .result {
+        .result, .tagline {
             margin-top: 20px;
             font-size: 1.2em;
             font-weight: bold;
+        }
+        .result {
             color: #e74c3c;
         }
         .tagline {
-            margin-top: 18px;
-            font-size: 1.2em;
-            font-weight: bold;
             color: #064C72;
         }
         .fees-info {
@@ -159,20 +160,18 @@
         }
 
         if (isNaN(weeklyPurchase) || isNaN(weeklyProfit) || isNaN(limitWaribei)) {
-            document.getElementById('fees-info').innerHTML = `<p>Frais Waribei: ${formatNumber(fraisWaribei)} F</p>`;
-            document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI: ${formatNumber(totalBenefit)} F`;
+            document.getElementById('fees-info').innerHTML = `<p>Frais Waribei: ... F</p>`;
+            document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI: ... F`;
             return;
         }
 
-
         let fraisWaribei = calculateWaribeiFees(limitWaribei);
-
         const margin = weeklyProfit / weeklyPurchase;
         const additionalBenefit = margin * limitWaribei;
         const totalBenefit = weeklyProfit + additionalBenefit - fraisWaribei;
 
-        document.getElementById('fees-info').innerHTML = <p>Frais Waribei: ${formatNumber(fraisWaribei)} F</p>;
-        document.getElementById('result').innerHTML = BÉNÉFICE TOTAL AVEC WARIBEI: ${formatNumber(totalBenefit)} F;
+        document.getElementById('fees-info').innerHTML = `<p>Frais Waribei: ${formatNumber(fraisWaribei)} F</p>`;
+        document.getElementById('result').innerHTML = `BÉNÉFICE TOTAL AVEC WARIBEI: ${formatNumber(totalBenefit)} F`;
 
         // Populate hidden form fields
         document.getElementById('hiddenShopName').value = document.getElementById('shopName').value;
